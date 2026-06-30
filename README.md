@@ -1,5 +1,7 @@
 # terraform-aisia-swarm
 
+[![Terraform Registry](https://img.shields.io/badge/Terraform%20Registry-terraform-aisia-swarm-7B42BC?logo=terraform)](https://registry.terraform.io/modules/aisia-foundation/swarm/aisia/latest) [![License: MPL-2.0](https://img.shields.io/badge/License-MPL--2.0-brightgreen.svg)](LICENSE)
+
 Module Terraform pour déployer **AISIA** (orchestration IA souveraine, local-first,
 multi-providers) sur un cluster **Docker Swarm existant** — cloud-agnostique
 (bare-metal ARM64, VM cloud, hybride). Couvre le **déploiement**
@@ -45,7 +47,7 @@ provider "docker" {
 }
 
 module "aisia" {
-  source  = "AISIA-fr/aisia/docker"
+  source  = "aisia-foundation/swarm/aisia"
   version = "~> 6.9"
 
   image_tag  = "v6.9.61"
