@@ -38,7 +38,7 @@ variable "image_registry" {
 variable "image_tag" {
   description = "Tag d'image AISIA à déployer (ex. v6.9.61). Doit être un manifest multi-arch (arm64 + amd64)."
   type        = string
-  default     = "v6.9.86"
+  default     = "v6.9.87"
 }
 
 variable "image_frontend_name" {
