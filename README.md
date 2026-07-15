@@ -8,7 +8,7 @@
 
 # terraform-aisia-swarm
 
-> **v6.12.39** — module cœur — déployer AISIA sur Docker Swarm existant
+> **v6.12.40** — module cœur — déployer AISIA sur Docker Swarm existant
 
 ## Cœur d'AISIA (identité produit)
 
@@ -23,7 +23,7 @@ puis cloud si nécessaire — via `BanditRouter`, pas un simple reverse-proxy.
 |--------------|-------|
 | 1 provider fixe | **88** providers + **58** modèles locaux |
 | Stateless | Qdrant + audit AI Act + multi-tenant |
-| SaaS opaque | Déployable Swarm/K8s — **v6.12.39** LIVE |
+| SaaS opaque | Déployable Swarm/K8s — **v6.12.40** LIVE |
 
 Documentation : [README racine](../../../../README.md) ·
 [Product Identity](../../../../specification/03-Project-State/Product-Identity-AISIA.md)
@@ -76,7 +76,7 @@ module "aisia" {
   source  = "aisia-foundation/swarm/aisia"
   version = "~> 6.9"
 
-  image_tag  = "v6.12.39"
+  image_tag  = "v6.12.40"
   stack_name = "aisia"
   tier       = "saas"     # free | saas | baas | paas
   domain     = "client.aisia.fr"
@@ -125,7 +125,7 @@ order              = "stop-first"
 | `docker_host` | string | `unix:///var/run/docker.sock` | URL du Swarm manager (informationnel — configurer le provider en amont) |
 | `stack_name` | string | `aisia` | Préfixe des services Swarm |
 | `image_registry` | string | `registry.aisia.fr` | Registry des images AISIA |
-| `image_tag` | string | `v6.12.39` | Tag d'image (manifest multi-arch requis) |
+| `image_tag` | string | `v6.12.40` | Tag d'image (manifest multi-arch requis) |
 | `image_frontend_name` | string | `aisia-frontend` | Nom de l'image frontend |
 | `domain` | string | `""` | Domaine public frontend (vide = pas de labels Traefik) |
 | `api_domain` | string | `""` | Domaine API (vide = `api.<domain>` si domain fourni) |
@@ -198,7 +198,7 @@ order              = "stop-first"
 - [ ] `tofu validate` OK (module + examples)
 - [ ] README inputs/outputs/usage + examples présents
 - [ ] LICENSE MPL-2.0 présent
-- [ ] tag git `v6.12.39` poussé
+- [ ] tag git `v6.12.40` poussé
 - [ ] repo connecté sur registry.terraform.io (Publish Module)
 
 ## Licence
@@ -217,4 +217,4 @@ MPL-2.0 — voir [LICENSE](./LICENSE).
 - **Référence API** : [api.aisia.fr/docs](https://api.aisia.fr/docs)
 - **Provider Terraform** : [aisia-foundation/aisia](https://registry.terraform.io/providers/aisia-foundation/aisia/latest/docs)
 - **Guide d'implémentation** : [getting-started](https://registry.terraform.io/providers/aisia-foundation/aisia/latest/docs/guides/getting-started)
-- **Version LIVE** : **v6.12.39**
+- **Version LIVE** : **v6.12.40**
