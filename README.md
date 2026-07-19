@@ -8,7 +8,7 @@
 
 # terraform-aisia-swarm
 
-> **v6.12.65** — module cœur — déployer AISIA sur Docker Swarm existant
+> **v6.12.69** — module cœur — déployer AISIA sur Docker Swarm existant
 
 ## Cœur d'AISIA (identité produit)
 
@@ -21,9 +21,10 @@ puis cloud si nécessaire — via `BanditRouter`, pas un simple reverse-proxy.
 
 | vs proxy LLM | AISIA |
 |--------------|-------|
-| 1 provider fixe | **88** providers + **58** modèles locaux |
+| 1 provider fixe | **88** providers déclarés |
+| Catalogue modèles | **3275** modèles catalogue · **115** locaux déclarés · **58** locaux actifs |
 | Stateless | Qdrant + audit AI Act + multi-tenant |
-| SaaS opaque | Déployable Swarm/K8s — **v6.12.65** LIVE |
+| SaaS opaque | Déployable Swarm/K8s — **v6.12.69** LIVE |
 
 Documentation : [README racine](../../../../README.md) ·
 [Product Identity](../../../../specification/03-Project-State/Product-Identity-AISIA.md)
@@ -76,7 +77,7 @@ module "aisia" {
   source  = "aisia-foundation/swarm/aisia"
   version = "~> 6.9"
 
-  image_tag  = "v6.12.65"
+  image_tag  = "v6.12.69"
   stack_name = "aisia"
   tier       = "saas"     # free | saas | baas | paas
   domain     = "client.aisia.fr"
@@ -125,7 +126,7 @@ order              = "stop-first"
 | `docker_host` | string | `unix:///var/run/docker.sock` | URL du Swarm manager (informationnel — configurer le provider en amont) |
 | `stack_name` | string | `aisia` | Préfixe des services Swarm |
 | `image_registry` | string | `registry.aisia.fr` | Registry des images AISIA |
-| `image_tag` | string | `v6.12.65` | Tag d'image (manifest multi-arch requis) |
+| `image_tag` | string | `v6.12.69` | Tag d'image (manifest multi-arch requis) |
 | `image_frontend_name` | string | `aisia-frontend` | Nom de l'image frontend |
 | `domain` | string | `""` | Domaine public frontend (vide = pas de labels Traefik) |
 | `api_domain` | string | `""` | Domaine API (vide = `api.<domain>` si domain fourni) |
@@ -198,7 +199,7 @@ order              = "stop-first"
 - [ ] `tofu validate` OK (module + examples)
 - [ ] README inputs/outputs/usage + examples présents
 - [ ] LICENSE MPL-2.0 présent
-- [ ] tag git `v6.12.65` poussé
+- [ ] tag git `v6.12.69` poussé
 - [ ] repo connecté sur registry.terraform.io (Publish Module)
 
 ## Licence
@@ -208,6 +209,47 @@ MPL-2.0 — voir [LICENSE](./LICENSE).
 ## Référence des variables & sorties (auto-générée)
 
 <!-- BEGIN_TF_DOCS -->
+### Inputs (parité `variables.tf`)
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `docker_host` | `string` | `"unix:///var/run/docker.sock"` | — |
+| `stack_name` | `string` | `"aisia"` | Nom du stack Docker Swarm — préfixe des services (aisia_api, aisia_bot…). Doit correspondre au nom passé à 'docker stack deploy'. |
+| `image_registry` | `string` | `"registry.aisia.fr"` | Registry des images AISIA (ex. registry.aisia.fr ou ghcr.io/aisia). |
+| `image_tag` | `string` | `"v6.12.69"` | Tag d'image AISIA à déployer (ex. v6.12.69). Doit être un manifest multi-arch (arm64 + amd64). |
+| `image_frontend_name` | `string` | `"aisia-frontend"` | Nom de l'image frontend (sans registry ni tag). Ex. 'aisia-frontend' → registry/aisia-frontend:tag. |
+| `domain` | `string` | `""` | Domaine public de l'instance (ex. client.aisia.fr). Vide = pas de labels Traefik auto-générés. |
+| `api_domain` | `string` | `""` | Sous-domaine de l'API REST AISIA. Vide = 'api.<domain>' si domain est fourni, sinon désactivé. |
+| `tier` | `string` | `"saas"` | Tier d'exploitation : free | saas | baas | paas. Pilote les réplicas par défaut du bot et du frontend. |
+| `bot_replicas` | `number` | `null` | Replicas du service bot. null = dérivé du tier (free/saas→1, baas/paas→2). |
+| `frontend_replicas` | `number` | `null` | Replicas du service frontend. null = dérivé du tier (free→1, saas→2, baas→2, paas→4). |
+| `placement_api` | `list(string)` | `["node.role == worker"]` | Contraintes de placement Swarm pour l'API (mode global). Ex. ['node.labels.aisia-role == api']. |
+| `placement_agent` | `list(string)` | `["node.role == worker"]` | Contraintes de placement pour l'agent (mode global). |
+| `placement_bot` | `list(string)` | `["node.role == worker"]` | Contraintes de placement pour le bot (mode replicated). |
+| `placement_frontend` | `list(string)` | `["node.role == worker"]` | Contraintes de placement pour le frontend (mode replicated). Ex. ['node.labels.aisia-role == frontend']. |
+| `gpu_enabled` | `bool` | `false` | Ajoute la contrainte 'node.labels.gpu == true' sur le service agent (nœuds équipés d'un GPU). |
+| `network_driver` | `string` | `"overlay"` | Driver réseau Docker (overlay recommandé pour Swarm multi-nœuds). |
+| `update_parallelism` | `number` | `1` | Tâches mises à jour en parallèle. Règle AISIA : toujours 1 (jamais >= 2 --force ; un parallélisme élevé peut cascader en I/O). |
+| `update_delay` | `string` | `"60s"` | Délai entre chaque lot de rolling update (ex. '60s', '2m'). |
+| `extra_env` | `map(string)` | `{}` | Variables d'environnement supplémentaires injectées dans tous les services backend AISIA. |
+
+### Outputs (parité `outputs.tf`)
+
+| Name | Description |
+|------|-------------|
+| `stack_name` | Nom du stack Docker Swarm déployé. |
+| `network_id` | ID du réseau overlay AISIA créé. |
+| `network_name` | Nom du réseau overlay AISIA. |
+| `api_service_name` | Nom du service Docker Swarm de l'API AISIA. |
+| `bot_service_name` | Nom du service Docker Swarm du bot AISIA. |
+| `agent_service_name` | Nom du service Docker Swarm de l'agent AISIA. |
+| `frontend_service_name` | Nom du service Docker Swarm du frontend AISIA. |
+| `public_url` | URL publique du frontend (si domain fourni). |
+| `api_url` | URL publique de l'API REST (si domain fourni). |
+| `tier` | Tier d'exploitation appliqué. |
+| `effective_bot_replicas` | Nombre de replicas effectif du bot (après dérivation tier). |
+| `effective_frontend_replicas` | Nombre de replicas effectif du frontend (après dérivation tier). |
+| `deploy_id` | ID unique de ce déploiement Terraform (stable par stack_name, utile pour le debugging). |
 <!-- END_TF_DOCS -->
 
 <!-- TF-MODULE-DOCS:09_publications -->
@@ -217,4 +259,23 @@ MPL-2.0 — voir [LICENSE](./LICENSE).
 - **Référence API** : [api.aisia.fr/docs](https://api.aisia.fr/docs)
 - **Provider Terraform** : [aisia-foundation/aisia](https://registry.terraform.io/providers/aisia-foundation/aisia/latest/docs)
 - **Guide d'implémentation** : [getting-started](https://registry.terraform.io/providers/aisia-foundation/aisia/latest/docs/guides/getting-started)
-- **Version LIVE** : **v6.12.65**
+- **Version LIVE** : **v6.12.69**
+
+<!-- TF-REGISTRY-STATUS -->
+## Statut publication registry (honnête)
+
+> Mesuré à la régénération docs · version repo **v6.12.69** (`VERSION` modules + provider).
+
+| Artefact | Repo | Public registry.terraform.io |
+|----------|------|------------------------------|
+| Provider `aisia-foundation/aisia` | `6.12.69` | ⚠️ non mesuré (provider: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032)>) |
+| Module `terraform-aisia-cluster` (`cluster/aisia`) | `6.12.69` | ⚠️ non mesuré (offline) |
+| Module `terraform-aisia-swarm` (`swarm/aisia`) | `6.12.69` | ⚠️ non mesuré (offline) |
+| Module `terraform-aws-aisia` (`aisia/aws`) | `6.12.69` | ⚠️ non mesuré (offline) |
+| Module `terraform-azure-aisia` (`aisia/azure`) | `6.12.69` | ⚠️ non mesuré (offline) |
+| Module `terraform-google-aisia` (`aisia/google`) | `6.12.69` | ⚠️ non mesuré (offline) |
+| Module `terraform-ovh-aisia` (`aisia/ovh`) | `6.12.69` | ⚠️ non mesuré (offline) |
+| Module `terraform-scaleway-aisia` (`aisia/scaleway`) | `6.12.69` | ⚠️ non mesuré (offline) |
+
+HCP privé (`app.terraform.io/AISIA`) : non interrogé ici (token fondateur). Ne pas écrire « 100 % registry » si une ligne public est absente ou en écart.
+
