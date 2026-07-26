@@ -22,7 +22,7 @@ puis cloud si nécessaire — via `BanditRouter`, pas un simple reverse-proxy.
 | vs proxy LLM | AISIA |
 |--------------|-------|
 | 1 provider fixe | **88** providers déclarés |
-| Catalogue modèles | **3275** modèles catalogue · **115** locaux déclarés · **58** locaux actifs |
+| Catalogue modèles | **866** modèles catalogue · **115** locaux déclarés · **58** locaux actifs |
 | Stateless | Qdrant + audit AI Act + multi-tenant |
 | SaaS opaque | Déployable Swarm/K8s — **v6.12.71** LIVE |
 
@@ -216,7 +216,7 @@ MPL-2.0 — voir [LICENSE](./LICENSE).
 | `docker_host` | `string` | `"unix:///var/run/docker.sock"` | — |
 | `stack_name` | `string` | `"aisia"` | Nom du stack Docker Swarm — préfixe des services (aisia_api, aisia_bot…). Doit correspondre au nom passé à 'docker stack deploy'. |
 | `image_registry` | `string` | `"registry.aisia.fr"` | Registry des images AISIA (ex. registry.aisia.fr ou ghcr.io/aisia). |
-| `image_tag` | `string` | `"v6.12.71"` | Tag d'image AISIA à déployer (ex. v6.12.71). Doit être un manifest multi-arch (arm64 + amd64). |
+| `image_tag` | `string` | `"v6.12.73"` | Tag d'image AISIA à déployer (ex. v6.12.71). Doit être un manifest multi-arch (arm64 + amd64). |
 | `image_frontend_name` | `string` | `"aisia-frontend"` | Nom de l'image frontend (sans registry ni tag). Ex. 'aisia-frontend' → registry/aisia-frontend:tag. |
 | `domain` | `string` | `""` | Domaine public de l'instance (ex. client.aisia.fr). Vide = pas de labels Traefik auto-générés. |
 | `api_domain` | `string` | `""` | Sous-domaine de l'API REST AISIA. Vide = 'api.<domain>' si domain est fourni, sinon désactivé. |
@@ -268,14 +268,14 @@ MPL-2.0 — voir [LICENSE](./LICENSE).
 
 | Artefact | Repo | Public registry.terraform.io |
 |----------|------|------------------------------|
-| Provider `aisia-foundation/aisia` | `6.12.71` | ⚠️ non mesuré (provider: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032)>) |
-| Module `terraform-aisia-cluster` (`cluster/aisia`) | `6.12.71` | ⚠️ non mesuré (offline) |
-| Module `terraform-aisia-swarm` (`swarm/aisia`) | `6.12.71` | ⚠️ non mesuré (offline) |
-| Module `terraform-aws-aisia` (`aisia/aws`) | `6.12.71` | ⚠️ non mesuré (offline) |
-| Module `terraform-azure-aisia` (`aisia/azure`) | `6.12.71` | ⚠️ non mesuré (offline) |
-| Module `terraform-google-aisia` (`aisia/google`) | `6.12.71` | ⚠️ non mesuré (offline) |
-| Module `terraform-ovh-aisia` (`aisia/ovh`) | `6.12.71` | ⚠️ non mesuré (offline) |
-| Module `terraform-scaleway-aisia` (`aisia/scaleway`) | `6.12.71` | ⚠️ non mesuré (offline) |
+| Provider `aisia-foundation/aisia` | `6.12.71` | ⚠️ non mesuré (non interrogé par la publication déterministe) |
+| Module `terraform-aisia-cluster` (`cluster/aisia`) | `6.12.73` | ⚠️ non mesuré (offline) |
+| Module `terraform-aisia-swarm` (`swarm/aisia`) | `6.12.73` | ⚠️ non mesuré (offline) |
+| Module `terraform-aws-aisia` (`aisia/aws`) | `6.12.73` | ⚠️ non mesuré (offline) |
+| Module `terraform-azure-aisia` (`aisia/azure`) | `6.12.73` | ⚠️ non mesuré (offline) |
+| Module `terraform-google-aisia` (`aisia/google`) | `6.12.73` | ⚠️ non mesuré (offline) |
+| Module `terraform-ovh-aisia` (`aisia/ovh`) | `6.12.73` | ⚠️ non mesuré (offline) |
+| Module `terraform-scaleway-aisia` (`aisia/scaleway`) | `6.12.73` | ⚠️ non mesuré (offline) |
 
 HCP privé (`app.terraform.io/AISIA`) : non interrogé ici (token fondateur). Ne pas écrire « 100 % registry » si une ligne public est absente ou en écart.
 
