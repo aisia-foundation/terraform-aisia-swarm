@@ -2,6 +2,20 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/) · Versioning : SemVer AISIA-couplé.
 
+## [6.12.78] — 2026-08-04
+
+### Changed
+- Sync `image_tag` default -> `v6.12.78` (release AISIA v6.12.78 LIVE). Rattrape aussi le
+  saut `v6.12.77` (VERSION + image_tag bumpés en v6.12.77 par le commit `ad31e4ac8` sans
+  entrée CHANGELOG, jamais publié au registry). Aucun changement fonctionnel des
+  resources/variables/outputs (patch de synchronisation de version).
+
+## [6.12.76] — 2026-08-02
+
+### Changed
+- Sync `image_tag` default -> `v6.12.76` (release AISIA v6.12.76 LIVE). Aucun changement
+  fonctionnel des resources/variables/outputs (patch de synchronisation de version).
+
 ## [6.9.61] — 2026-06-30
 
 ### Added
