@@ -8,7 +8,7 @@
 
 # terraform-aisia-swarm
 
-> **v6.12.90** · code **v6.12.91** tagué, registry/images LIVE encore **v6.12.90** — module cœur — déployer AISIA sur Docker Swarm existant
+> **v6.12.91** · code **v6.12.92** tagué, registry/images LIVE encore **v6.12.91** — module cœur — déployer AISIA sur Docker Swarm existant
 
 ## Cœur d'AISIA (identité produit)
 
@@ -24,7 +24,7 @@ puis cloud si nécessaire — via `BanditRouter`, pas un simple reverse-proxy.
 | 1 provider fixe | **88** providers déclarés |
 | Catalogue modèles | **867** modèles catalogue · **123** locaux déclarés · **58** locaux enabled |
 | Stateless | Qdrant + audit AI Act + multi-tenant |
-| SaaS opaque | Déployable Swarm/K8s — runtime **v6.12.90** · code **v6.12.91** |
+| SaaS opaque | Déployable Swarm/K8s — runtime **v6.12.91** · code **v6.12.92** |
 
 Documentation : [README racine](../../../../README.md) ·
 [Product Identity](../../../../specification/03-Project-State/Product-Identity-AISIA.md)
@@ -77,7 +77,7 @@ module "aisia" {
   source  = "aisia-foundation/swarm/aisia"
   version = "~> 6.9"
 
-  image_tag  = "v6.12.91"
+  image_tag  = "v6.12.92"
   stack_name = "aisia"
   tier       = "saas"     # free | saas | baas | paas
   domain     = "client.aisia.fr"
@@ -126,7 +126,7 @@ order              = "stop-first"
 | `docker_host` | string | `unix:///var/run/docker.sock` | URL du Swarm manager (informationnel — configurer le provider en amont) |
 | `stack_name` | string | `aisia` | Préfixe des services Swarm |
 | `image_registry` | string | `registry.aisia.fr` | Registry des images AISIA |
-| `image_tag` | string | `v6.12.91` | Tag d'image (manifest multi-arch requis) |
+| `image_tag` | string | `v6.12.92` | Tag d'image (manifest multi-arch requis) |
 | `image_frontend_name` | string | `aisia-frontend` | Nom de l'image frontend |
 | `domain` | string | `""` | Domaine public frontend (vide = pas de labels Traefik) |
 | `api_domain` | string | `""` | Domaine API (vide = `api.<domain>` si domain fourni) |
@@ -199,7 +199,7 @@ order              = "stop-first"
 - [ ] `tofu validate` OK (module + examples)
 - [ ] README inputs/outputs/usage + examples présents
 - [ ] LICENSE MPL-2.0 présent
-- [ ] tag git `v6.12.91` poussé
+- [ ] tag git `v6.12.92` poussé
 - [ ] repo connecté sur registry.terraform.io (Publish Module)
 
 ## Licence
@@ -216,7 +216,7 @@ MPL-2.0 — voir [LICENSE](./LICENSE).
 | `docker_host` | `string` | `"unix:///var/run/docker.sock"` | — |
 | `stack_name` | `string` | `"aisia"` | Nom du stack Docker Swarm — préfixe des services (aisia_api, aisia_bot…). Doit correspondre au nom passé à 'docker stack deploy'. |
 | `image_registry` | `string` | `"registry.aisia.fr"` | Registry des images AISIA (ex. registry.aisia.fr ou ghcr.io/aisia). |
-| `image_tag` | `string` | `"v6.12.91"` | Tag d'image AISIA à déployer (ex. v6.12.90). Doit être un manifest multi-arch (arm64 + amd64). |
+| `image_tag` | `string` | `"v6.12.92"` | Tag d'image AISIA à déployer (ex. v6.12.92). Doit être un manifest multi-arch (arm64 + amd64). |
 | `image_frontend_name` | `string` | `"aisia-frontend"` | Nom de l'image frontend (sans registry ni tag). Ex. 'aisia-frontend' → registry/aisia-frontend:tag. |
 | `domain` | `string` | `""` | Domaine public de l'instance (ex. client.aisia.fr). Vide = pas de labels Traefik auto-générés. |
 | `api_domain` | `string` | `""` | Sous-domaine de l'API REST AISIA. Vide = 'api.<domain>' si domain est fourni, sinon désactivé. |
@@ -259,24 +259,24 @@ MPL-2.0 — voir [LICENSE](./LICENSE).
 - **Référence API** : [api.aisia.fr/docs](https://api.aisia.fr/docs)
 - **Provider Terraform** : [aisia-foundation/aisia](https://registry.terraform.io/providers/aisia-foundation/aisia/latest/docs)
 - **Guide d'implémentation** : [getting-started](https://registry.terraform.io/providers/aisia-foundation/aisia/latest/docs/guides/getting-started)
-- **Version module / code** : **v6.12.91**
-- **PROD LIVE documentaire** : **v6.12.90** (runtime cluster ; distinct du tag module)
+- **Version module / code** : **v6.12.92**
+- **PROD LIVE documentaire** : **v6.12.91** (runtime cluster ; distinct du tag module)
 
 <!-- TF-REGISTRY-STATUS -->
 ## Statut publication registry (honnête)
 
-> Mesuré à la régénération docs · **version code TF** **v6.12.91** (`VERSION` modules + provider) · PROD LIVE documentaire **v6.12.90**.
+> Mesuré à la régénération docs · **version code TF** **v6.12.92** (`VERSION` modules + provider) · PROD LIVE documentaire **v6.12.91**.
 
 | Artefact | Repo | Public registry.terraform.io |
 |----------|------|------------------------------|
-| Provider `aisia-foundation/aisia` | `6.12.91` | **6.12.90** ❌ écart |
-| Module `terraform-aisia-cluster` (`cluster/aisia`) | `6.12.91` | **6.12.90** ❌ écart |
-| Module `terraform-aisia-swarm` (`swarm/aisia`) | `6.12.91` | **6.12.90** ❌ écart |
-| Module `terraform-aws-aisia` (`aisia/aws`) | `6.12.91` | **6.12.90** ❌ écart |
-| Module `terraform-azure-aisia` (`aisia/azure`) | `6.12.91` | **6.12.90** ❌ écart |
-| Module `terraform-google-aisia` (`aisia/google`) | `6.12.91` | **absent public** ⚠️ |
-| Module `terraform-ovh-aisia` (`aisia/ovh`) | `6.12.91` | **6.12.90** ❌ écart |
-| Module `terraform-scaleway-aisia` (`aisia/scaleway`) | `6.12.91` | **6.12.90** ❌ écart |
+| Provider `aisia-foundation/aisia` | `6.12.92` | **6.12.91** ❌ écart |
+| Module `terraform-aisia-cluster` (`cluster/aisia`) | `6.12.92` | **6.12.91** ❌ écart |
+| Module `terraform-aisia-swarm` (`swarm/aisia`) | `6.12.92` | **6.12.91** ❌ écart |
+| Module `terraform-aws-aisia` (`aisia/aws`) | `6.12.92` | **6.12.91** ❌ écart |
+| Module `terraform-azure-aisia` (`aisia/azure`) | `6.12.92` | **6.12.91** ❌ écart |
+| Module `terraform-google-aisia` (`aisia/google`) | `6.12.92` | **absent public** ⚠️ |
+| Module `terraform-ovh-aisia` (`aisia/ovh`) | `6.12.92` | **6.12.91** ❌ écart |
+| Module `terraform-scaleway-aisia` (`aisia/scaleway`) | `6.12.92` | **6.12.91** ❌ écart |
 
 HCP privé (`app.terraform.io/AISIA`) : modules + provider publiés via `scripts/ops/publish_terraform.sh --apply` (mesuré hors ce tableau). Ne pas écrire « 100 % registry public » si Google public est absent.
 
