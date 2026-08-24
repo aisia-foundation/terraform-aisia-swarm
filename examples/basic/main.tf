@@ -33,7 +33,7 @@ module "aisia" {
   source = "../../"
 
   # Image
-  image_tag      = "v6.13.1"
+  image_tag      = "v6.13.10"
   image_registry = "registry.aisia.fr"
 
   # Stack
