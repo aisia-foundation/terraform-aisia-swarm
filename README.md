@@ -76,7 +76,7 @@ provider "docker" {
 
 module "aisia" {
   source  = "aisia-foundation/swarm/aisia"
-  version = "~> 6.9"
+  version = "6.14.1"
 
   image_tag  = "v6.14.1"
   stack_name = "aisia"
