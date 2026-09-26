@@ -2,6 +2,24 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/) · Versioning : SemVer AISIA-couplé.
 
+## [6.14.1] — 2026-09-24
+
+### Alignement de version — aucun changement fonctionnel
+
+Les versions **6.12.81 à 6.14.1** ont été publiées sans entrée individuelle
+dans ce changelog. Vérification faite au 2026-09-24 : sur cette plage, les
+fichiers `.tf` de ce module n'ont reçu que des bandeaux de version et des
+en-têtes de documentation. Aucune ressource, variable, sortie ni contrainte de
+provider n'a été modifiée.
+
+Écrire trente entrées rétroactives donnerait une fausse impression d'activité ;
+cette entrée unique dit ce qui s'est réellement passé. L'historique détaillé
+reste consultable dans Git et dans `specification/Versions/deploy-reports/`.
+
+Le module suit la version du monorepo : son `VERSION` vaut **6.14.1**, comme
+le produit. Ce couplage est délibéré — un module publié doit pouvoir être
+rattaché sans ambiguïté à la release qui l'a produit.
+
 ## [Unreleased] — correction pré-publication (2026-08-05)
 
 ### Fixed
@@ -222,3 +240,20 @@ Format : [Keep a Changelog](https://keepachangelog.com/) · Versioning : SemVer 
 - README avec tableaux Inputs/Outputs, usage, prérequis, architecture.
 - LICENSE MPL-2.0, VERSION 6.9.61, exemple `examples/basic`.
 - Providers : `kreuzwerker/docker >= 3.0.2` + `hashicorp/random >= 3.5.0`.
+
+## Relecture release 6.14.1
+
+Revue du 2026-09-24 pour la release dont le code et le runtime mesuré sont **6.14.1**. `/health` répond 6.14.1, la classe publique est `LIVE_PARTIAL`, `ceremony_complete` est faux. La dernière cérémonie all-green scellée reste **v6.13.10**. Cette relecture ne ferme pas la cérémonie.
+
+Document relu : Changelog — terraform-aisia-swarm.
+
+Extrait conservé : Format : [Keep a Changelog](https://keepachangelog.com/) · Versioning : SemVer AISIA-couplé.
+
+Ce fichier garde son rôle d'origine. S'il décrit une campagne, un changelog ou un modèle daté, cette date reste valable. Seul l'état de production ci-dessus est celui du 2026-09-24.
+
+```mermaid
+flowchart LR
+  doc["Changelog — terraform-aisia-swarm"] --> live["Runtime 6.14.1 PARTIAL"]
+  live --> ceremony["Cérémonie non close"]
+  ceremony --> last["Dernière all-green v6.13.10"]
+```
